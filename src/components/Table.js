@@ -16,15 +16,21 @@ const Table = () => {
     <table>
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Body</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Employee Id</th>
+          <th>DOB</th>
+          <th>Phone Number</th>
         </tr>
       </thead>
       <tbody>
         {data.map(item => (
           <tr key={item.id}>
-            <td>{item.title}</td>
-            <td>{item.body}</td>
+            <td>{item.name}</td>
+            <td>{item.email}</td>
+            <td>{item.employee}</td>
+            <td>{item.dob}</td>
+            <td>{item.phone}</td>
           </tr>
         ))}
       </tbody>
