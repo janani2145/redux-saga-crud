@@ -1,29 +1,41 @@
-// sagas.js
+
 import { call, put, takeEvery } from 'redux-saga/effects';
-import axios from 'axios';
-import { addDataFailure, addDataSuccess, fetchDataFailure, fetchDataSuccess } from '../action/action';
-import { ADD_DATA, FETCH_DATA } from '../action/type';
+import axios, { all } from 'axios';
+
+import { API_URL } from '../services/mockApis';
+import { CREATE_USER_SUCCESS, FETCH_USER, FETCH_USER_SUCCESS } from '../Redux/Type/Type';
 
 
-function* fetchDataSaga() {
-  try {
-    const response = yield call(axios.get, 'https://65ae12861dfbae409a73dcb5.mockapi.io/employee');
-    yield put(fetchDataSuccess(response.data));
-  } catch (error) {
-    yield put(fetchDataFailure(error.message));
-  }
+//workerSaga
+function* createuser(action){
+try{
+const response= yield call(axios.post, API_URL, action.payload)
+yield put({type: CREATE_USER_SUCCESS, payload:response.data});
+}
+catch(error){
+    console.error("Error creating user:", error);
+}
+}
+function* fetchuser(action){
+    try{
+const response=yield call (axios.get, API_URL)
+yield put({type:FETCH_USER_SUCCESS,payload:response.data})
+    }
+    catch(error){
+console.error("Error fetching user")
+    }
 }
 
-function* addDataSaga(action) {
-  try {
-    const response = yield call(axios.post, 'https://65ae12861dfbae409a73dcb5.mockapi.io/employee', action.payload);
-    yield put(addDataSuccess(response.data));
-  } catch (error) {
-    yield put(addDataFailure(error.message));
-  }
+
+//watcherSaga
+function*watchCreateUser(){
+yield takeEvery(CREATE_USER,createuser)
+}
+function*watchFetchUser(){
+    yield takeEvery(FETCH_USER,fetchuser)
 }
 
-export default function* rootSaga() {
-  yield takeEvery(FETCH_DATA, fetchDataSaga);
-  yield takeEvery(ADD_DATA, addDataSaga);
+//rootsaga
+export default function*rootSaga(){
+    yield all([watchCreateUser(),watchFetchUser()]);
 }

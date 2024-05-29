@@ -1,0 +1,19 @@
+
+export let API_URL='https://65ae12861dfbae409a73dcb5.mockapi.io/users';
+
+// export const getData=async()=>{
+//     const response =await axios({
+//         method:"GET",
+//         url:API_URL,
+//     });
+//     return response;
+// }
+// export const postData=async(data)=>{
+//     const response =await axios({
+//         method:"POST",
+//         url:API_URL,
+//         data:data,
+//     });
+//     return response;
+
+// }
