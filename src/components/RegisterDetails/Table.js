@@ -1,18 +1,27 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../../Redux/Action/Action';
+import { deleteUser, fetchUser } from '../../Redux/Action/Action';
+import { useNavigate } from 'react-router-dom';
 
 export const Table = () => {
   const users = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  const nav= useNavigate();
 
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
 
+const handleDelete=(id)=>{
+dispatch(deleteUser(id));
+  }
+  const handleEdit=(id)=>{
+    nav(`/${id}`)
+  }
+
   return (
     <>
-      <table className='table'>
+      <table className='table table-bordered'>
         <thead>
           <tr>
             <th>SI.No</th>
@@ -22,8 +31,7 @@ export const Table = () => {
             <th>DOB</th>
             <th>Phone Number</th>
             <th>Actions</th>
-          </tr>
-        </thead>
+          </tr>        </thead>
         <tbody>
           {users.map((user, index) => (
             <tr key={user.id}>
@@ -34,13 +42,13 @@ export const Table = () => {
               <td>{user.dob}</td>
               <td>{user.phone}</td>
               <td>
-                <button>Edit</button>
-                <button>Delete</button>
+              <button onClick={()=>handleEdit(user.id)}>Edit</button>
+              <button onClick={()=>handleDelete(user.id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
     </>
-  )
-}
+  );
+};

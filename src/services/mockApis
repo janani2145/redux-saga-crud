@@ -1,3 +1,2 @@
-const API_BASE_URL="https://65ae12861dfbae409a73dcb5.mockapi.io/users";
-
+const API_BASE_URL=`https://65ae12861dfbae409a73dcb5.mockapi.io/users`;
 export default API_BASE_URL;

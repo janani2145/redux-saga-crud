@@ -1,17 +1,36 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createUser } from '../../Redux/Action/Action';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createUser, fetchIdUser, updateUser } from '../../Redux/Action/Action';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Form = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const user = useSelector((state) => state.user);
+
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
   const [roll, setRoll] = useState("");
   const [dob, setDob] = useState("");
   const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchIdUser(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (user && id) {
+      setName(user.name);
+      setDepartment(user.department);
+      setRoll(user.roll);
+      setDob(user.dob);
+      setPhone(user.phone);
+    }
+  }, [user, id]);
 
   function reset() {
     setName("");
@@ -23,8 +42,11 @@ const Form = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(createUser({ name, department, roll, dob, phone }));
-   
+    if (id) {
+      dispatch(updateUser(id, { name, department, roll, dob, phone }));
+    } else {
+      dispatch(createUser({ name, department, roll, dob, phone }));
+    }
     navigate('/table');
     reset();
   }
@@ -34,7 +56,7 @@ const Form = () => {
       <div className="container mt-5">
         <div className='d-flex justify-content-center'>
           <form className="form w-50 border p-5 rounded" onSubmit={handleSubmit}>
-            <h3>Registration Form</h3>
+            <h3>Register Form</h3>
             <div>
               <label className='formlabel'>Name</label>
               <input className='form-control' type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -49,7 +71,7 @@ const Form = () => {
             </div>
             <div>
               <label className='formlabel mt-2'>DOB</label>
-              <input className='form-control' type="text" value={dob} onChange={(e) => setDob(e.target.value)} />
+              <input className='form-control' type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
             </div>
             <div>
               <label className='formlabel mt-2'>Phone Number</label>

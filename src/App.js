@@ -10,7 +10,7 @@ const App = () => {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Form />} />
+          <Route path='/:id' element={<Form />} />
           <Route path='/table' element={<Table />} />
         </Routes>
       </BrowserRouter>
