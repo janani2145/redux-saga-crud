@@ -1,7 +1,7 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
 import axios from 'axios';
 import { CREATE_USER, CREATE_USER_SUCCESS, DELETE_USER, DELETE_USER_SUCCESS, FETCH_ID_USER, FETCH_ID_USER_SUCCESS, FETCH_USER, FETCH_USER_SUCCESS, UPDATE_USER, UPDATE_USER_SUCCESS } from '../Redux/Type/Type';
-import { updateUser } from '../Redux/Action/Action';
+
 
 
 function* createUserSaga(action) {
@@ -40,15 +40,20 @@ function* fetchIdUserSaga(action){
     console.log("Error fetchingById user:",error);
   }
 }
-function* updateUserSaga(action){
-  try{
-    const response = yield call (axios.put,`https://65ae12861dfbae409a73dcb5.mockapi.io/users/${action.payload.id}`);
-yield put({type: UPDATE_USER_SUCCESS, payload:response.data})
-  }
-  catch(error){
-    console.log("Error updating user:",error)
+function* updateUserSaga(action) {
+  try {
+    const response = yield call(
+      axios.put,
+      `https://65ae12861dfbae409a73dcb5.mockapi.io/users/${action.payload.id}`,
+      action.payload.user
+    );
+    yield put({ type: UPDATE_USER_SUCCESS, payload: response.data });
+  } catch (error) {
+    console.error("Error updating user:", error);
   }
 }
+
+
 
 
 
